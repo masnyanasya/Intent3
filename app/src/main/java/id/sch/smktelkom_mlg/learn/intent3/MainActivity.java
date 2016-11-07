@@ -40,6 +40,14 @@ public class MainActivity extends AppCompatActivity {
                 openWebPage("http://www.smktelkom-mlg.sch.id");
             }
         });
+        findViewById(R.id.imageViewCamera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                capturePhoto();
+            }
+        });
+
 
 
     }
@@ -69,6 +77,25 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
         if(intent.resolveActivity(getPackageManager()) !=null)
             startActivity(intent);
+    }
+    
+    private void capturePhoto()
+    {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(intent.resolveActivity(getPackageManager()) !=null)
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK)
+        {
+            Bitmap bitmap = data.getParcelableExtra("data");
+            ImageView iv = (ImageView) findViewById(R.id.imageViewCamera);
+            iv.setImageBitmap(bitmap);
+        }
     }
 
 }
